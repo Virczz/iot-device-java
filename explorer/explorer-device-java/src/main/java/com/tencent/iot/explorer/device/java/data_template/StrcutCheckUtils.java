@@ -58,7 +58,7 @@ public class StrcutCheckUtils {
 
                 } else if ((type.equals(TXDataTemplateJson.TYPE_BOOL) && (json.getInt(key) == 0 || json.getInt(key) == 1)) && json.get(key) instanceof Integer) {
                     return valueTypeInfo;
-                } else if (type.equals(TXDataTemplateJson.TYPE_ENUM) && json.get(key) instanceof Integer) {
+                } else if ((type.equals(TXDataTemplateJson.TYPE_ENUM) || type.equals(TXDataTemplateJson.TYPE_STRING_ENUM)) && json.get(key) instanceof Integer) {
                     int index = json.getInt(key);
                     JSONObject mapping = dataTypeJson.getJSONObject("mapping");
                     Iterator<String> it = mapping.keys();
