@@ -26,6 +26,7 @@ public class DataTemplateJson {
     public static final String TYPE_INT = "int";
     public static final String TYPE_FLOAT = "float";
     public static final String TYPE_STRING = "string";
+    public static final String TYPE_STRING_ENUM = "stringenum";
     public static final String TYPE_ENUM = "enum";
     public static final String TYPE_TIMESTAMP = "timestamp";
     public static final String TYPE_STRUCT = "struct";
@@ -84,7 +85,11 @@ public class DataTemplateJson {
                     return Status.OK;
                 }
             } else if (type.equals(TYPE_FLOAT)) { //FLOAT类型取值符合范围
-                if (value instanceof Float &&
+                if (value instanceof Integer &&
+                        ((Integer) value).intValue() >= Float.parseFloat(valueDescribeJson.getString("min")) &&
+                        ((Integer) value).intValue() <= Float.parseFloat(valueDescribeJson.getString("max"))) {
+                    return Status.OK;
+                } else if (value instanceof Float &&
                         ((Float) value).floatValue() >= Float.parseFloat(valueDescribeJson.getString("min")) &&
                         ((Float) value).floatValue() <= Float.parseFloat(valueDescribeJson.getString("max"))) {
                     return Status.OK;
@@ -98,7 +103,7 @@ public class DataTemplateJson {
                         ((String) value).length() <= Integer.parseInt(valueDescribeJson.getString("max"))) {
                     return Status.OK;
                 }
-            } else if (type.equals(TYPE_ENUM)) { //枚举类型取值在范围内
+            } else if (type.equals(TYPE_ENUM) || type.equals(TYPE_STRING_ENUM)) { //枚举类型取值在范围内
                 if (value instanceof Integer) {
                     JSONObject mapping = valueDescribeJson.getJSONObject("mapping");
                     Iterator<String> it = mapping.keys();
